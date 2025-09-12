@@ -58,4 +58,4 @@ We acknowledge the following reference for inspiring our work:
 
 Archit, A., Freckmann, L., Nair, S. et al. *Segment Anything for Microscopy*. Nat Methods 22, 579–591 (2025). https://doi.org/10.1038/s41592-024-02580-4
 
-See COPYRIGHT for full copyright notice.
+See the full [COPYRIGHT](src/COPYRIGHT) notice for details.
