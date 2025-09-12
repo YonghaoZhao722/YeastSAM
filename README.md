@@ -41,7 +41,7 @@ This section is to fix the offset between smFISH image and DIC (as masks are gen
 - **Mask2Outline**: Convert mask files to FISH-Quant compatible outline format
 
 ### 4. Separation Module
-- **Mask Editor**: You can annotate mask images manually or with CNN & U-Net separation module. Download models at ''
+- **Mask Editor**: You can annotate mask images manually or with CNN & U-Net separation module. Download models at [GitHub Releases](https://github.com/YonghaoZhao722/YeastSAM/releases).
 
 ## Tools Overview
 
