@@ -4,7 +4,7 @@
   <img src="src/yeastsam.png" alt="YeastSAM Logo" width="200"/>
 </div>
 
-YeastSAM is a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, and outline conversion. For detailed documentation, visit .
+YeastSAM is a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, and outline conversion. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
 
 ## Installation
 
@@ -52,3 +52,10 @@ The `tools/` directory contains the following utilities:
 - `Mask2Outline.py`: Mask to outline conversion
 - `mask_editor.py`: Advanced mask editing interface
 
+## Acknowledgement
+
+We acknowledge the following reference for inspiring our work:
+
+Archit, A., Freckmann, L., Nair, S. et al. *Segment Anything for Microscopy*. Nat Methods 22, 579–591 (2025). https://doi.org/10.1038/s41592-024-02580-4
+
+See COPYRIGHT for full copyright notice.
