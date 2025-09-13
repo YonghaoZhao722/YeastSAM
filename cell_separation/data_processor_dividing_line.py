@@ -54,10 +54,6 @@ class DividingLineDataProcessor:
         print(f"Task: Combined cell mask -> Dividing line prediction")
         
     def find_matching_files(self) -> List[Tuple[Path, Path]]:
-        """
-        Find matching file pairs: (divided_mask, outline_txt)
-        No longer depends on dic_masks - we'll generate complete masks from divided_masks
-        """
         print("\n=== Finding Matching File Pairs ===")
         
         # Get all valid files (excluding macOS hidden files)

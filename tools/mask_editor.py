@@ -358,7 +358,7 @@ class MaskEditor(QMainWindow):
         self.mask_img = None
         self.original_mask = None
         self.mask_file_path = None
-        self.current_tool = "selector"
+        self.current_tool = "select"
         self.selected_object_ids = set()  # Changed from single ID to set for multi-selection
         self.brush_size = 5
         self.is_drawing = False
@@ -475,6 +475,7 @@ class MaskEditor(QMainWindow):
         
         self.mask_file_label = QLabel("No mask loaded")
         self.mask_file_label.setWordWrap(True)
+        self.mask_file_label.setMaximumHeight(40)  # Limit height to prevent overflow
         self.mask_file_label.setStyleSheet("font-size: 11px; color: gray;")
         single_layout.addWidget(self.mask_file_label)
         
@@ -565,27 +566,27 @@ class MaskEditor(QMainWindow):
         self.tool_group = QButtonGroup()
         
         # Create tool buttons with icons
-        self.selector_btn = QPushButton()
-        self.eraser_btn = QPushButton()
-        self.divider_btn = QPushButton()
+        self.select_btn = QPushButton()
+        self.erase_btn = QPushButton()
+        self.divide_btn = QPushButton()
         self.drag_btn = QPushButton()
         
         # Set up tool buttons
         self.setup_tool_buttons()
         
         # Add buttons to layout and group
-        tools_button_layout.addWidget(self.selector_btn)
-        tools_button_layout.addWidget(self.eraser_btn)
-        tools_button_layout.addWidget(self.divider_btn)
+        tools_button_layout.addWidget(self.select_btn)
+        tools_button_layout.addWidget(self.erase_btn)
+        tools_button_layout.addWidget(self.divide_btn)
         tools_button_layout.addWidget(self.drag_btn)
         
-        self.tool_group.addButton(self.selector_btn, 0)
-        self.tool_group.addButton(self.eraser_btn, 1)
-        self.tool_group.addButton(self.divider_btn, 2)
+        self.tool_group.addButton(self.select_btn, 0)
+        self.tool_group.addButton(self.erase_btn, 1)
+        self.tool_group.addButton(self.divide_btn, 2)
         self.tool_group.addButton(self.drag_btn, 3)
         
         self.tool_group.buttonClicked.connect(self.on_tool_button_clicked)
-        self.selector_btn.setChecked(True)  # Default selection
+        self.select_btn.setChecked(True)  # Default selection
         
         tools_layout.addLayout(tools_button_layout)
         
@@ -1033,16 +1034,16 @@ class MaskEditor(QMainWindow):
         """Set up tool buttons with SVG icons and styling"""
         # SVG icon definitions
         svg_icons = {
-            "selector": '<svg t="1757673172508" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7985" width="200" height="200"><path d="M174.63 78.98c0.03-12.61 16.41-19.91 25.81-11.5l328.72 293.98 318.27 284.63c10.51 9.4 0.4 26.75-14.25 24.46L435.7 608.43c-6.23-0.97-12.72 1.92-16.16 7.2L199.96 952.72c-8.09 12.42-27.76 8.34-27.72-5.76l1.17-426.97 1.22-441.01z" fill="#6C6D6E" p-id="7986"></path></svg>',
-            "eraser": '<svg t="1757673128888" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6999" width="200" height="200"><path d="M597.333333 810.538667h298.666667v85.333333h-384l-170.581333 0.085333-276.778667-276.821333a42.666667 42.666667 0 0 1 0-60.330667L517.12 106.282667a42.666667 42.666667 0 0 1 60.330667 0l331.904 331.861333a42.666667 42.666667 0 0 1 0 60.330667L597.333333 810.538667z m70.698667-191.402667l150.826667-150.826667-271.530667-271.530666-150.826667 150.826666 271.530667 271.530667z" fill="#000000" p-id="7000"></path></svg>',
-            "divider": '<svg t="1757673241480" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10811" width="200" height="200"><path d="M586.76224 512.41984l433.5104-434.5856c6.8096-6.8096 2.03776-18.64704-7.6288-18.64704H889.46688c-2.85696 0-5.71392 1.08544-7.6288 3.13344l-371.98848 372.9408-122.75712-123.1872c17.00864-30.07488 26.81856-64.78848 26.81856-101.80608C413.91104 96.07168 321.21856 3.3792 207.02208 3.3792S0.13312 96.07168 0.13312 210.26816c0 114.18624 92.69248 206.87872 206.88896 206.87872 37.70368 0 72.94976-10.06592 103.30112-27.62752L432.82432 512.41984 310.19008 635.33056c-30.35136-17.5616-65.59744-27.63776-103.30112-27.63776C92.69248 607.70304 0 700.39552 0 814.592c0 114.19648 92.69248 206.87872 206.88896 206.87872 114.18624 0 206.87872-92.68224 206.87872-206.87872 0-37.02784-9.79968-71.7312-26.80832-101.80608l122.76736-123.1872 371.97824 372.9408c2.048 2.03776 4.7616 3.13344 7.6288 3.13344h123.31008c9.66656 0 14.57152-11.71456 7.6288-18.64704L586.76224 512.41984zM206.88896 319.15008c-60.02688 0-108.88192-48.86528-108.88192-108.88192C97.9968 150.24128 146.86208 101.376 206.88896 101.376c60.01664 0 108.88192 48.85504 108.88192 108.88192s-48.86528 108.89216-108.88192 108.89216z m0 604.32384c-60.02688 0-108.88192-48.86528-108.88192-108.88192 0-60.02688 48.85504-108.88192 108.88192-108.88192 60.01664 0 108.88192 48.86528 108.88192 108.88192s-48.86528 108.88192-108.88192 108.88192z m0 0" fill="#2C2C2C" p-id="10812"></path></svg>',
+            "select": '<svg t="1757673172508" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7985" width="200" height="200"><path d="M174.63 78.98c0.03-12.61 16.41-19.91 25.81-11.5l328.72 293.98 318.27 284.63c10.51 9.4 0.4 26.75-14.25 24.46L435.7 608.43c-6.23-0.97-12.72 1.92-16.16 7.2L199.96 952.72c-8.09 12.42-27.76 8.34-27.72-5.76l1.17-426.97 1.22-441.01z" fill="#6C6D6E" p-id="7986"></path></svg>',
+            "erase": '<svg t="1757673128888" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6999" width="200" height="200"><path d="M597.333333 810.538667h298.666667v85.333333h-384l-170.581333 0.085333-276.778667-276.821333a42.666667 42.666667 0 0 1 0-60.330667L517.12 106.282667a42.666667 42.666667 0 0 1 60.330667 0l331.904 331.861333a42.666667 42.666667 0 0 1 0 60.330667L597.333333 810.538667z m70.698667-191.402667l150.826667-150.826667-271.530667-271.530666-150.826667 150.826666 271.530667 271.530667z" fill="#000000" p-id="7000"></path></svg>',
+            "divide": '<svg t="1757673241480" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10811" width="200" height="200"><path d="M586.76224 512.41984l433.5104-434.5856c6.8096-6.8096 2.03776-18.64704-7.6288-18.64704H889.46688c-2.85696 0-5.71392 1.08544-7.6288 3.13344l-371.98848 372.9408-122.75712-123.1872c17.00864-30.07488 26.81856-64.78848 26.81856-101.80608C413.91104 96.07168 321.21856 3.3792 207.02208 3.3792S0.13312 96.07168 0.13312 210.26816c0 114.18624 92.69248 206.87872 206.88896 206.87872 37.70368 0 72.94976-10.06592 103.30112-27.62752L432.82432 512.41984 310.19008 635.33056c-30.35136-17.5616-65.59744-27.63776-103.30112-27.63776C92.69248 607.70304 0 700.39552 0 814.592c0 114.19648 92.69248 206.87872 206.88896 206.87872 114.18624 0 206.87872-92.68224 206.87872-206.87872 0-37.02784-9.79968-71.7312-26.80832-101.80608l122.76736-123.1872 371.97824 372.9408c2.048 2.03776 4.7616 3.13344 7.6288 3.13344h123.31008c9.66656 0 14.57152-11.71456 7.6288-18.64704L586.76224 512.41984zM206.88896 319.15008c-60.02688 0-108.88192-48.86528-108.88192-108.88192C97.9968 150.24128 146.86208 101.376 206.88896 101.376c60.01664 0 108.88192 48.85504 108.88192 108.88192s-48.86528 108.89216-108.88192 108.89216z m0 604.32384c-60.02688 0-108.88192-48.86528-108.88192-108.88192 0-60.02688 48.85504-108.88192 108.88192-108.88192 60.01664 0 108.88192 48.86528 108.88192 108.88192s-48.86528 108.88192-108.88192 108.88192z m0 0" fill="#2C2C2C" p-id="10812"></path></svg>',
             "drag": '<svg t="1757673316774" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15714" width="200" height="200"><path d="M768 469.312v-128L938.688 512 768 682.688v-128H554.688V768h128L512 938.688 341.312 768h128V554.688H256v128L85.312 512 256 341.312v128h213.312V256h-128L512 85.312 682.688 256h-128v213.312z" fill="#333333" p-id="15715"></path></svg>'
         }
         
         tools_data = [
-            (self.selector_btn, "selector", "Selector"),
-            (self.eraser_btn, "eraser", "Eraser"), 
-            (self.divider_btn, "divider", "Divider"),
+            (self.select_btn, "select", "Select"),
+            (self.erase_btn, "erase", "Erase"), 
+            (self.divide_btn, "divide", "Divide"),
             (self.drag_btn, "drag", "Drag")
         ]
         
@@ -1084,7 +1085,7 @@ class MaskEditor(QMainWindow):
     
     def on_tool_button_clicked(self, button):
         """Handle tool button clicks"""
-        tool_name = getattr(button, 'tool_name', 'selector')
+        tool_name = getattr(button, 'tool_name', 'select')
         self.set_tool(tool_name)
     
     def toggle_file_mode(self):
@@ -1424,8 +1425,8 @@ class MaskEditor(QMainWindow):
         self.current_tool = tool
         self.divide_points = []  # Clear divide points when switching tools
         self.status_label.setText(f"Tool: {tool.title()}")
-        if tool == "divider":
-            self.status_label.setText("Tool: Divider - Drag to draw division line")
+        if tool == "divide":
+            self.status_label.setText("Tool: Divide - Drag to draw division line")
     
     def update_brush_size(self, value):
         self.brush_size = value
@@ -1718,7 +1719,7 @@ class MaskEditor(QMainWindow):
         self.is_drawing = True
         self.last_pos = (event.xdata, event.ydata)
         
-        if self.current_tool == "selector":
+        if self.current_tool == "select":
             # Select object at click position
             x, y = int(event.xdata), int(event.ydata)
             if 0 <= x < self.mask_img.shape[1] and 0 <= y < self.mask_img.shape[0]:
@@ -1749,7 +1750,7 @@ class MaskEditor(QMainWindow):
                         self.update_selection_display()
                         self.update_display()
         
-        elif self.current_tool == "divider":
+        elif self.current_tool == "divide":
             # Start division line
             self.divide_points = [(event.xdata, event.ydata)]
         
@@ -1758,12 +1759,12 @@ class MaskEditor(QMainWindow):
             self.is_dragging = True
             self.drag_start_pos = (event.xdata, event.ydata)
         
-        # Reset brush state for eraser
-        if self.current_tool == "eraser":
+        # Reset brush state for erase
+        if self.current_tool == "erase":
             self._brush_state_saved = False
     
     def on_mouse_release(self, event):
-        if self.current_tool == "divider" and len(self.divide_points) == 1 and event.inaxes:
+        if self.current_tool == "divide" and len(self.divide_points) == 1 and event.inaxes:
             # Complete division line
             self.divide_points.append((event.xdata, event.ydata))
             self.apply_division()
@@ -1810,7 +1811,7 @@ class MaskEditor(QMainWindow):
         if not self.is_drawing:
             return
             
-        if self.current_tool == "eraser":
+        if self.current_tool == "erase":
             self.apply_brush_operation(event.xdata, event.ydata)
     
     def apply_brush_operation(self, x, y):
@@ -3478,7 +3479,7 @@ class MaskEditor(QMainWindow):
                 if class_result['predicted_class'] == 0:  # Normal
                     color = [0.2, 0.8, 0.2]  # Green for normal
                 else:  # Budding
-                    color = [0.8, 0.2, 0.2]  # Red for budding
+                    color = [0.8, 0.2, 0.8]  # Magenta for budding
                 
                 # Adjust brightness based on confidence
                 confidence = class_result['confidence']
