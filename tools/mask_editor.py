@@ -403,7 +403,7 @@ class MaskEditor(QMainWindow):
         
         # Initialize PyTorch device if available
         if TORCH_AVAILABLE:
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu')
             print(f"Classification device: {self.device}")
         
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
