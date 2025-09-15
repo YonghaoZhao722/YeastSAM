@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
             ("napari", self.launch_napari)
         ])
         # Section 2
-        frame2 = create_section("2. Optional", [
+        frame2 = create_section("2. Optional Tools", [
             ("Shift Analyzer", self.launch_shift_analyzer),
             ("Apply Registration", self.launch_apply_registration)
         ])

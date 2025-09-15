@@ -196,6 +196,7 @@ class MaskVisualizationTool(QMainWindow):
         
         # Brightness and contrast controls
         bg_controls_layout = QHBoxLayout()
+        bg_select_layout.addWidget(QLabel("Brightness and Contrast:"))
         
         self.auto_adjust_btn = QPushButton("Auto Adjust")
         self.auto_adjust_btn.clicked.connect(self.auto_adjust_bg)
