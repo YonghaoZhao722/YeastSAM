@@ -27,7 +27,7 @@ python cell_classification_processor_fixed.py --data_root data --output_dir clas
 
 2. **Train classification model:**
 ```bash
-python cell_classification_model.py --data_dir classification_data --epochs 100 --batch_size 128
+python cell_classification_model.py --data_dir classification_data --epochs 200 --batch_size 128
 ```
 
 ### Dividing Line Prediction Pipeline
@@ -39,7 +39,7 @@ python data_processor_dividing_line.py --data_root data --output_dir processed_d
 
 2. **Train U-Net model:**
 ```bash
-python train_dividing_line_unet.py --data-dir processed_dividing_line_data --epochs 200 --lr 5e-5
+python train_dividing_line_unet.py --data-dir processed_dividing_line_data --epochs 500 --lr 5e-5 --batch_size 32
 ```
 
 ## Expected Data Structure
