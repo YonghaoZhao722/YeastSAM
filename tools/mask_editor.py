@@ -508,7 +508,7 @@ class MaskEditor(QMainWindow):
         self.output_folder_label.setStyleSheet("font-size: 10px; color: gray;")
         batch_layout.addWidget(self.output_folder_label)
         
-        # File navigation
+        # File navigation and save
         nav_layout = QHBoxLayout()
         self.prev_btn = QPushButton("◀")
         self.prev_btn.clicked.connect(self.previous_file)
@@ -521,6 +521,12 @@ class MaskEditor(QMainWindow):
         self.next_btn.setEnabled(False)
         self.next_btn.setFixedWidth(30)
         nav_layout.addWidget(self.next_btn)
+        
+        # Add save button for batch mode
+        self.batch_save_btn = QPushButton("Save")
+        self.batch_save_btn.clicked.connect(self.save_batch_current)
+        self.batch_save_btn.setEnabled(False)
+        nav_layout.addWidget(self.batch_save_btn)
         
         batch_layout.addLayout(nav_layout)
         
@@ -1364,31 +1370,116 @@ class MaskEditor(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to save {output_file}: {str(e)}")
             return False
     
+    def save_batch_current(self):
+        """Manual save current file in batch processing"""
+        if not self.output_folder or not self.file_list or self.mask_img is None:
+            QMessageBox.warning(self, "Warning", "No mask loaded or output folder not set")
+            return
+        
+        input_file = self.file_list[self.current_file_index]
+        filename = os.path.basename(input_file)
+        
+        # Change extension to .tif for output
+        name_without_ext = os.path.splitext(filename)[0]
+        output_file = os.path.join(self.output_folder, f"{name_without_ext}.tif")
+        outline_file = os.path.join(self.output_folder, f"{name_without_ext}.txt")
+        
+        try:
+            # Save as 16-bit TIFF to preserve object labels
+            tiff.imwrite(output_file, self.mask_img.astype(np.uint16))
+            
+            # Save classification results if available
+            classification_file = None
+            if self.cell_classifications and TORCH_AVAILABLE:
+                classification_file = os.path.join(self.output_folder, f"{name_without_ext}_classifications.json")
+                export_data = {
+                    'metadata': {
+                        'export_date': datetime.now().isoformat(),
+                        'model_path': self.model_path,
+                        'mask_file': filename,
+                        'total_cells': len(self.cell_classifications),
+                        'normal_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
+                        'budding_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
+                    },
+                    'classifications': self.cell_classifications
+                }
+                
+                import json
+                with open(classification_file, 'w') as f:
+                    json.dump(export_data, f, indent=2)
+            
+            # Generate outline file if enabled
+            outline_success = False
+            if self.generate_outlines_cb.isChecked():
+                # Generate outline file with the original filename as CY3 reference
+                cy3_filename = filename  # Use original input filename
+                outline_success = generate_fishquant_outline(self.mask_img, cy3_filename, outline_file)
+            
+            # Show success message
+            success_msg = f"Saved: {filename}"
+            if outline_success:
+                success_msg += " (mask + outline"
+            else:
+                success_msg += " (mask"
+            if classification_file:
+                success_msg += " + classifications"
+            success_msg += ")"
+            
+            QMessageBox.information(self, "Save Successful", success_msg)
+            self.status_label.setText(success_msg)
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to save {output_file}: {str(e)}")
+    
     def next_file(self):
         """Move to next file in batch processing"""
         if not self.file_list:
             return
         
+        # Store current file name for reference
+        current_file_name = os.path.basename(self.file_list[self.current_file_index]) if self.file_list else None
+        
         # Auto save current file
         if self.mask_img is not None:
             self.auto_save_current()
         
-        # Move to next file
-        if self.current_file_index < len(self.file_list) - 1:
-            self.current_file_index += 1
-            self.load_current_file()
-        else:
-            # Check if there might be more files to process (re-scan)
-            old_file_count = len(self.file_list)
-            self.rescan_files_and_update()
+        # Force UI to process events and update
+        from PyQt5.QtWidgets import QApplication
+        QApplication.processEvents()
+        
+        # Always rescan after saving to get the updated file list
+        old_file_count = len(self.file_list)
+        self.rescan_files_and_update()
+        
+        if len(self.file_list) > 0:
+            # Find the next file to process after the current one
+            next_index = 0  # Default to first file
             
-            if len(self.file_list) > 0:
-                # New files found or some were un-processed
-                self.load_current_file()
-            elif old_file_count > 0:
-                QMessageBox.information(self, "Batch Complete", "All files have been processed!")
-            else:
-                self.status_label.setText("No more files to process")
+            if current_file_name:
+                # Find all files that come after the current file alphabetically
+                remaining_files = []
+                for i, file_path in enumerate(self.file_list):
+                    file_name = os.path.basename(file_path)
+                    if file_name > current_file_name:  # Alphabetically later
+                        remaining_files.append((i, file_name))
+                
+                if remaining_files:
+                    # Take the first file that comes after current file
+                    next_index = remaining_files[0][0]
+                else:
+                    # No files come after current file alphabetically, take the first one
+                    next_index = 0
+            
+            self.current_file_index = next_index
+            self.load_current_file()
+            
+            # Force another UI update after loading
+            QApplication.processEvents()
+            
+        elif old_file_count > 0:
+            QMessageBox.information(self, "Batch Complete", "All files have been processed!")
+        else:
+            self.status_label.setText("No more files to process")
     
     def previous_file(self):
         """Move to previous file in batch processing"""
@@ -1399,22 +1490,36 @@ class MaskEditor(QMainWindow):
         if self.mask_img is not None:
             self.auto_save_current()
         
+        # Force UI to process events and update
+        from PyQt5.QtWidgets import QApplication
+        QApplication.processEvents()
+        
         # Move to previous file
         if self.current_file_index > 0:
             self.current_file_index -= 1
             self.load_current_file()
+            
+            # Force another UI update after loading
+            QApplication.processEvents()
+        else:
+            # Already at the first file
+            self.status_label.setText("Already at the first file")
     
     def update_navigation_buttons(self):
         """Update navigation button states"""
         has_files = bool(self.file_list)
         has_input_folder = bool(self.input_folder)
         is_batch_mode = self.batch_mode_radio.isChecked()
+        has_mask = self.mask_img is not None
         
         # Only enable navigation in batch mode when input folder is selected and files exist
         can_navigate = has_files and has_input_folder and is_batch_mode
         
         self.prev_btn.setEnabled(can_navigate and self.current_file_index > 0)
-        self.next_btn.setEnabled(can_navigate and self.current_file_index < len(self.file_list) - 1)
+        # Enable Next button if we have files - after saving, there might be more files to process
+        self.next_btn.setEnabled(can_navigate)
+        # Enable save button when in batch mode and has mask to save
+        self.batch_save_btn.setEnabled(can_navigate and has_mask)
         
         # Debug info
         print(f"Navigation update: files={has_files}, input_folder={has_input_folder}, batch={is_batch_mode}")
