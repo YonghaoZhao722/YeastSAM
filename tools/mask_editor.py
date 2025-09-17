@@ -194,7 +194,7 @@ def generate_fishquant_outline(mask_img, cy3_filename, output_file):
 
 class LightweightCNN(nn.Module):
     """
-    Lightweight CNN for binary cell classification (Normal vs Budding)
+    Lightweight CNN for binary cell classification (G1 Phase vs Budding)
     """
     
     def __init__(self, input_size=128, num_classes=2, dropout=0.3):
@@ -339,7 +339,7 @@ class ClassificationWorker(QThread):
                 results[int(cell_id)] = {
                     'predicted_class': predicted_class,
                     'confidence': confidence,
-                    'class_name': 'Normal' if predicted_class == 0 else 'Budding',
+                    'class_name': 'G1 Phase' if predicted_class == 0 else 'Budding',
                     'probabilities': probabilities.cpu().numpy().tolist()[0]
                 }
                 
@@ -699,12 +699,6 @@ class MaskEditor(QMainWindow):
         self.generate_outlines_cb.setToolTip("Generate FISH-QUANT format outline files when saving masks")
         view_layout.addWidget(self.generate_outlines_cb)
         
-        # Compact labels option
-        self.compact_labels_cb = QCheckBox("Compact Labels")
-        self.compact_labels_cb.setChecked(False)
-        self.compact_labels_cb.setToolTip("Use smaller, more compact cell labels (automatic for >20 cells)")
-        self.compact_labels_cb.toggled.connect(self.update_display)
-        view_layout.addWidget(self.compact_labels_cb)
         
         # Add spacing
         view_layout.addSpacing(8)
@@ -837,7 +831,7 @@ class MaskEditor(QMainWindow):
             correction_layout = QHBoxLayout()
             correction_layout.addWidget(QLabel("Class:"))
             self.manual_class_combo = QComboBox()
-            self.manual_class_combo.addItems(["Normal", "Budding"])
+            self.manual_class_combo.addItems(["G1 Phase", "Budding"])
             correction_layout.addWidget(self.manual_class_combo)
             manual_section_layout.addLayout(correction_layout)
             
@@ -864,11 +858,11 @@ class MaskEditor(QMainWindow):
             delete_buttons_layout = QHBoxLayout()
             delete_buttons_layout.setSpacing(2)
             
-            self.delete_normal_btn = QPushButton("Delete Normal")
-            self.delete_normal_btn.clicked.connect(self.delete_normal_cells)
-            self.delete_normal_btn.setEnabled(False)
-            self.delete_normal_btn.setStyleSheet("QPushButton { background-color: #ffcccc; }")
-            delete_buttons_layout.addWidget(self.delete_normal_btn)
+            self.delete_g1_phase_btn = QPushButton("Delete G1 Phase")
+            self.delete_g1_phase_btn.clicked.connect(self.delete_g1_phase_cells)
+            self.delete_g1_phase_btn.setEnabled(False)
+            self.delete_g1_phase_btn.setStyleSheet("QPushButton { background-color: #ffcccc; }")
+            delete_buttons_layout.addWidget(self.delete_g1_phase_btn)
             
             self.delete_budding_btn = QPushButton("Delete Budding")
             self.delete_budding_btn.clicked.connect(self.delete_budding_cells)
@@ -1275,7 +1269,7 @@ class MaskEditor(QMainWindow):
             self.selected_object_ids.clear()
             self.cell_classifications = {}
             if TORCH_AVAILABLE:
-                self.delete_normal_btn.setEnabled(False)
+                self.delete_g1_phase_btn.setEnabled(False)
                 self.delete_budding_btn.setEnabled(False)
                 self.update_budding_segmentation_button_state()
             self.update_selection_display()
@@ -1330,7 +1324,7 @@ class MaskEditor(QMainWindow):
                         'model_path': self.model_path,
                         'mask_file': filename,
                         'total_cells': len(self.cell_classifications),
-                        'normal_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
+                        'g1_phase_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
                         'budding_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
                     },
                     'classifications': self.cell_classifications
@@ -1398,7 +1392,7 @@ class MaskEditor(QMainWindow):
                         'model_path': self.model_path,
                         'mask_file': filename,
                         'total_cells': len(self.cell_classifications),
-                        'normal_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
+                        'g1_phase_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
                         'budding_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
                     },
                     'classifications': self.cell_classifications
@@ -1583,7 +1577,7 @@ class MaskEditor(QMainWindow):
                 # Clear classification results for new file
                 self.cell_classifications = {}
                 if TORCH_AVAILABLE:
-                    self.delete_normal_btn.setEnabled(False)
+                    self.delete_g1_phase_btn.setEnabled(False)
                     self.delete_budding_btn.setEnabled(False)
                     self.update_budding_segmentation_button_state()
                 
@@ -1642,7 +1636,7 @@ class MaskEditor(QMainWindow):
                                 'model_path': self.model_path,
                                 'mask_file': self.mask_file_path,
                                 'total_cells': len(self.cell_classifications),
-                                'normal_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
+                                'g1_phase_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
                                 'budding_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
                             },
                             'classifications': self.cell_classifications
@@ -1735,7 +1729,7 @@ class MaskEditor(QMainWindow):
             old_count = len(self.cell_classifications)
             self.cell_classifications = {}
             if TORCH_AVAILABLE:
-                self.delete_normal_btn.setEnabled(False)
+                self.delete_g1_phase_btn.setEnabled(False)
                 self.delete_budding_btn.setEnabled(False)
                 self.update_budding_segmentation_button_state()
                 self.update_classification_display()
@@ -2205,7 +2199,7 @@ class MaskEditor(QMainWindow):
         
         # Enable delete buttons if we have classification results
         if TORCH_AVAILABLE and self.cell_classifications:
-            self.delete_normal_btn.setEnabled(True)
+            self.delete_g1_phase_btn.setEnabled(True)
             self.delete_budding_btn.setEnabled(True)
         
         # Update display
@@ -2216,10 +2210,10 @@ class MaskEditor(QMainWindow):
         self.update_budding_segmentation_button_state()
         
         # Show summary
-        normal_count = sum(1 for r in results.values() if r['predicted_class'] == 0)
+        g1_phase_count = sum(1 for r in results.values() if r['predicted_class'] == 0)
         budding_count = sum(1 for r in results.values() if r['predicted_class'] == 1)
         
-        self.status_label.setText(f"Classification complete: {normal_count} Normal, {budding_count} Budding")
+        self.status_label.setText(f"Classification complete: {g1_phase_count} G1 Phase, {budding_count} Budding")
     
     def on_classification_error(self, error_msg):
         """Handle classification error"""
@@ -2238,11 +2232,11 @@ class MaskEditor(QMainWindow):
             return
         
         # Update button text with summary
-        normal_count = sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0)
+        g1_phase_count = sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0)
         budding_count = sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
         total = len(self.cell_classifications)
         
-        button_text = f"View Results ({total} cells: {normal_count}N, {budding_count}B)"
+        button_text = f"View Results ({total} cells: {g1_phase_count}G1, {budding_count}B)"
         self.view_results_btn.setText(button_text)
         self.view_results_btn.setEnabled(True)
     
@@ -2276,12 +2270,12 @@ class MaskEditor(QMainWindow):
             results_text.append(f"Cell {cell_id}: {class_name} {conf_indicator} ({confidence_percent:.1f}%)")
         
         # Add summary
-        normal_count = sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0)
+        g1_phase_count = sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0)
         budding_count = sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
         total = len(self.cell_classifications)
         
         results_text.append("-" * 30)
-        results_text.append(f"Summary: {normal_count} Normal ({normal_count/total*100:.1f}%), "
+        results_text.append(f"Summary: {g1_phase_count} G1 Phase ({g1_phase_count/total*100:.1f}%), "
                           f"{budding_count} Budding ({budding_count/total*100:.1f}%)")
         
         # Create custom dialog for better display
@@ -2359,7 +2353,7 @@ class MaskEditor(QMainWindow):
             return
         
         manual_class = self.manual_class_combo.currentText()
-        predicted_class = 0 if manual_class == "Normal" else 1
+        predicted_class = 0 if manual_class == "G1 Phase" else 1
         
         # Apply manual classification to selected cells
         for cell_id in self.selected_object_ids:
@@ -2373,7 +2367,7 @@ class MaskEditor(QMainWindow):
         
         # Enable delete buttons if we have classification results
         if TORCH_AVAILABLE and self.cell_classifications:
-            self.delete_normal_btn.setEnabled(True)
+            self.delete_g1_phase_btn.setEnabled(True)
             self.delete_budding_btn.setEnabled(True)
         
         # Update display
@@ -2386,24 +2380,24 @@ class MaskEditor(QMainWindow):
         cell_count = len(self.selected_object_ids)
         self.status_label.setText(f"Manually classified {cell_count} cell{'s' if cell_count > 1 else ''} as {manual_class}")
     
-    def delete_normal_cells(self):
-        """Delete all cells classified as Normal"""
+    def delete_g1_phase_cells(self):
+        """Delete all cells classified as G1 Phase"""
         if not self.cell_classifications:
             QMessageBox.warning(self, "Warning", "No classification results available.")
             return
         
-        # Find all normal cells
-        normal_cells = [cell_id for cell_id, result in self.cell_classifications.items() 
-                       if result['predicted_class'] == 0]
+        # Find all G1 phase cells
+        g1_phase_cells = [cell_id for cell_id, result in self.cell_classifications.items() 
+                         if result['predicted_class'] == 0]
         
-        if not normal_cells:
-            QMessageBox.information(self, "Info", "No Normal cells found to delete.")
+        if not g1_phase_cells:
+            QMessageBox.information(self, "Info", "No G1 Phase cells found to delete.")
             return
         
         # Confirm deletion
         reply = QMessageBox.question(
             self, "Confirm Deletion", 
-            f"Are you sure you want to delete {len(normal_cells)} Normal cells?\n"
+            f"Are you sure you want to delete {len(g1_phase_cells)} G1 Phase cells?\n"
             f"This action cannot be undone.",
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No
@@ -2413,7 +2407,7 @@ class MaskEditor(QMainWindow):
             self.save_state()  # Save state before making changes
             
             # Delete the cells from mask
-            for cell_id in normal_cells:
+            for cell_id in g1_phase_cells:
                 self.mask_img[self.mask_img == cell_id] = 0
                 # Remove from classifications
                 if cell_id in self.cell_classifications:
@@ -2421,7 +2415,7 @@ class MaskEditor(QMainWindow):
             
             # Clear selection if any deleted cells were selected
             self.selected_object_ids = {cell_id for cell_id in self.selected_object_ids 
-                                       if cell_id not in normal_cells}
+                                       if cell_id not in g1_phase_cells}
             
             # Update displays
             self.update_selection_display()
@@ -2432,7 +2426,7 @@ class MaskEditor(QMainWindow):
             # Update budding segmentation button state
             self.update_budding_segmentation_button_state()
             
-            self.status_label.setText(f"Deleted {len(normal_cells)} Normal cells")
+            self.status_label.setText(f"Deleted {len(g1_phase_cells)} G1 Phase cells")
     
     def delete_budding_cells(self):
         """Delete all cells classified as Budding"""
@@ -2502,7 +2496,7 @@ class MaskEditor(QMainWindow):
                         'model_path': self.model_path,
                         'mask_file': self.mask_file_path,
                         'total_cells': len(self.cell_classifications),
-                        'normal_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
+                        'g1_phase_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 0),
                         'budding_count': sum(1 for r in self.cell_classifications.values() if r['predicted_class'] == 1)
                     },
                     'classifications': self.cell_classifications
@@ -2579,25 +2573,18 @@ class MaskEditor(QMainWindow):
             QMessageBox.warning(self, "Warning", "Please load dividing line model and mask first.")
             return
         
-        # Get budding cells from classification results
+        # Get budding cells from classification results (only existing ones)
         budding_cell_labels = self.get_budding_cell_labels()
         
         if len(budding_cell_labels) == 0:
-            QMessageBox.warning(self, "Warning", "No budding cells found. Please classify cells first or select specific budding cells.")
+            QMessageBox.warning(self, "Warning", "No budding cells found. This may be because:\n"
+                                                "• No cells have been classified as budding, or\n"
+                                                "• All budding cells have already been separated.\n\n"
+                                                "Please classify cells first if needed.")
             return
         
-        # Show info about what will be segmented
-        reply = QMessageBox.question(
-            self, "Separate Budding Cells",
-            f"Found {len(budding_cell_labels)} budding cells to separate.\n\n"
-            f"Failed cells will be reported with specific reasons.\n\n"
-            f"Proceed with separation?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.Yes
-        )
-        
-        if reply == QMessageBox.Yes:
-            self.perform_dividing_line_separation(budding_cell_labels)
+        # Directly proceed with separation without confirmation
+        self.perform_dividing_line_separation(budding_cell_labels)
     
     def perform_dividing_line_separation(self, cell_labels):
         """Perform dividing line separation on specified cells"""
@@ -2614,10 +2601,18 @@ class MaskEditor(QMainWindow):
             try:
                 # Extract cell mask
                 cell_mask = (self.mask_img == cell_id).astype(np.float32)
+                cell_size = np.sum(cell_mask)
+                
+                # Check if cell exists
+                if cell_size == 0:
+                    separation_results.append(f"Cell {cell_id}: Skipped (cell not found - may have been already separated)")
+                    failed_count += 1
+                    continue
                 
                 # Check if cell is large enough for separation
-                if np.sum(cell_mask) < 100:  # Skip very small cells
+                if cell_size < 100:  # Skip very small cells
                     separation_results.append(f"Cell {cell_id}: Skipped (too small)")
+                    failed_count += 1
                     continue
                 
                 # Check if cell already has multiple components
@@ -2651,6 +2646,11 @@ class MaskEditor(QMainWindow):
         self.update_display()
         self.update_object_list()
         self.update_segmentation_results(separation_results, processed_count, failed_count)
+        
+        # Update classification display and button states after separation
+        if TORCH_AVAILABLE:
+            self.update_classification_display()
+            self.update_budding_segmentation_button_state()
         
         # Provide intelligent feedback with results details
         failed_cells = [result for result in separation_results if "Failed -" in result]
@@ -2769,6 +2769,11 @@ class MaskEditor(QMainWindow):
         self.mask_img[smaller_component] = daughter_id  # Daughter (smaller)
         self.mask_img[larger_component] = mother_id     # Mother (larger)
         
+        # Update classification state: remove original cell classification
+        if cell_id in self.cell_classifications:
+            # Remove original cell classification - daughter/mother cells will remain unclassified
+            del self.cell_classifications[cell_id]
+        
         return True, "Success"
     
     def assign_mother_daughter_direct(self, cell_id, cell_mask, labeled_components, num_components):
@@ -2809,6 +2814,11 @@ class MaskEditor(QMainWindow):
             # Assign new IDs
             self.mask_img[smaller_component] = daughter_id  # Daughter (smaller)
             self.mask_img[larger_component] = mother_id     # Mother (larger)
+            
+            # Update classification state: remove original cell classification
+            if cell_id in self.cell_classifications:
+                # Remove original cell classification - daughter/mother cells will remain unclassified
+                del self.cell_classifications[cell_id]
             
             return True, message
             
@@ -3394,20 +3404,28 @@ class MaskEditor(QMainWindow):
         # Add summary
         total = processed_count + failed_count
         results_text.append("-" * 40)
-        results_text.append(f"Summary: {processed_count}/{total} successful ({processed_count/total*100:.1f}%)")
-        if failed_count > 0:
-            results_text.append(f"Failed: {failed_count} cells")
+        
+        if total > 0:
+            results_text.append(f"Summary: {processed_count}/{total} successful ({processed_count/total*100:.1f}%)")
+            if failed_count > 0:
+                results_text.append(f"Failed: {failed_count} cells")
+        else:
+            results_text.append("Summary: No cells were processed (all cells may have been already separated or not found)")
         
         self.segmentation_results.setText("\n".join(results_text))
     
     def get_budding_cell_labels(self):
-        """Get list of cell labels that are classified as budding"""
+        """Get list of cell labels that are classified as budding and still exist in the mask"""
         budding_labels = []
         
-        if self.cell_classifications:
-            # Get budding cells from classification results
+        if self.cell_classifications and self.mask_img is not None:
+            # Get all existing cell labels in the current mask
+            existing_labels = set(np.unique(self.mask_img))
+            existing_labels.discard(0)  # Remove background
+            
+            # Get budding cells from classification results, but only if they still exist
             for cell_id, classification in self.cell_classifications.items():
-                if classification['predicted_class'] == 1:  # 1 = Budding
+                if classification['predicted_class'] == 1 and cell_id in existing_labels:  # 1 = Budding
                     budding_labels.append(cell_id)
         
         return budding_labels
@@ -3415,16 +3433,16 @@ class MaskEditor(QMainWindow):
 
     
     def warn_before_segmentation(self, selected_cells):
-        """Warn user about applying separation to normal cells"""
-        normal_cells = []
+        """Warn user about applying separation to G1 phase cells"""
+        g1_phase_cells = []
         budding_cells = []
         unclassified_cells = []
         
         for cell_id in selected_cells:
             if cell_id in self.cell_classifications:
                 classification = self.cell_classifications[cell_id]
-                if classification['predicted_class'] == 0:  # Normal
-                    normal_cells.append(cell_id)
+                if classification['predicted_class'] == 0:  # G1 Phase
+                    g1_phase_cells.append(cell_id)
                 else:  # Budding
                     budding_cells.append(cell_id)
             else:
@@ -3433,9 +3451,9 @@ class MaskEditor(QMainWindow):
         # Build warning message
         warning_parts = []
         
-        if normal_cells:
-            warning_parts.append(f"⚠️ {len(normal_cells)} Normal cells selected")
-            warning_parts.append("Cell separation is not recommended for normal cells as they don't have division structures to separate.")
+        if g1_phase_cells:
+            warning_parts.append(f"⚠️ {len(g1_phase_cells)} G1 Phase cells selected")
+            warning_parts.append("Cell separation is not recommended for G1 phase cells as they don't have division structures to separate.")
         
         if unclassified_cells:
             warning_parts.append(f"❓ {len(unclassified_cells)} Unclassified cells selected") 
@@ -3445,7 +3463,7 @@ class MaskEditor(QMainWindow):
             warning_parts.append(f"✅ {len(budding_cells)} Budding cells selected")
         
         # Show warning if there are potential issues
-        if normal_cells or unclassified_cells:
+        if g1_phase_cells or unclassified_cells:
             warning_msg = "\n".join(warning_parts)
             warning_msg += "\n\nDo you want to proceed with cell separation?"
             
@@ -3496,12 +3514,12 @@ class MaskEditor(QMainWindow):
                     cell_list = ", ".join(cells[:3]) + f" and {len(cells)-3} more"
                 feedback_parts.append(f"   • {reason}: {cell_list}")
         elif failed > 0:
-            feedback_parts.append(f"\n📝 Note: Some failures are normal - not all budding cells can be cleanly separated.")
+            feedback_parts.append(f"\n📝 Note: Some failures are expected - not all budding cells can be cleanly separated.")
         
         feedback_msg = "\n".join(feedback_parts)
         
-        # Don't show popup for very small batches, but always show for failed cells details
-        if total >= 3 or (failed > 0 and failed_cells):
+        # Only show popup when there are failed cells
+        if failed > 0:
             QMessageBox.information(self, "Cell Separation Complete", feedback_msg)
     
     def update_budding_segmentation_button_state(self):
@@ -3581,8 +3599,8 @@ class MaskEditor(QMainWindow):
             # Use classification-based colors if available
             if label in self.cell_classifications:
                 class_result = self.cell_classifications[label]
-                if class_result['predicted_class'] == 0:  # Normal
-                    color = [0.2, 0.8, 0.2]  # Green for normal
+                if class_result['predicted_class'] == 0:  # G1 Phase
+                    color = [0.2, 0.8, 0.2]  # Green for G1 phase
                 else:  # Budding
                     color = [0.8, 0.2, 0.8]  # Magenta for budding
                 
@@ -3616,7 +3634,7 @@ class MaskEditor(QMainWindow):
         if self.show_numbers_cb.isChecked():
             # Check if we have many cells and need extra compact display
             num_cells = len(unique_labels)
-            compact_mode = num_cells > 20 or self.compact_labels_cb.isChecked()  # Use more compact display for many cells or user preference
+            compact_mode = num_cells > 20  # Use more compact display for many cells
             
             for label in unique_labels:
                 # Find centroid of the object
@@ -3647,7 +3665,7 @@ class MaskEditor(QMainWindow):
                     if label in self.cell_classifications:
                         class_name = self.cell_classifications[label]['class_name']
                         confidence = self.cell_classifications[label]['confidence']
-                        short_name = "N" if class_name == "Normal" else "B"
+                        short_name = "G" if class_name == "G1 Phase" else "B"
                         
                         if compact_mode:
                             # Very compact format for many cells: just show class letter
