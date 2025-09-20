@@ -59,6 +59,10 @@ The `tools/` directory contains the following utilities:
 
 **Note**: On macOS these tools are not compatible with Python 3.13. If you follow the installation command we provide above, everything should work correctly. However, if you directly use the conda instructions from the [µSAM tutorial page](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html), you may run into errors. In that case, please downgrade your Python version to 3.10 and recreate the environment.
 
+## Citation
+If you are using YeastSAM for your research, please cite our paper:
+
+Zhao, Y., Zhu, Z., Yang, S., Li, W. YeastSAM: A Deep Learning Model for Accurate Segmentation of Budding Yeast Cells. bioRxiv 2025.09.17.676679 (2025). https://doi.org/10.1101/2025.09.17.676679
 
 ## Acknowledgement
 
