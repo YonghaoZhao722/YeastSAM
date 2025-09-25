@@ -10,6 +10,9 @@ YeastSAM is a model and a framework for yeast cell analysis and mask processing.
 
 If you just want to run YeastSAM, you can refer to [µSAM](https://github.com/computational-cell-analytics/micro-sam) to install the framework. We provide custom weights for better yeast cell segmentation that can be downloaded from our [GitHub Releases](https://github.com/YonghaoZhao722/YeastSAM/releases). The custom weights can be used with napari, [BAND](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html#using-micro_sam-on-band), [CLI](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html#using-the-command-line-interface-cli), and [QuPath](https://github.com/ksugar/qupath-extension-sam).
 
+## Dataset
+The dataset used for training and validation can be found at Zenodo: https://zenodo.org/records/17199688, including DIC and the masks.
+
 ## Installation
 
 ### With Conda
@@ -60,7 +63,7 @@ The `tools/` directory contains the following utilities:
 **Note**: On macOS these tools are not compatible with Python 3.13. If you follow the installation command we provide above, everything should work correctly. However, if you directly use the conda instructions from the [µSAM tutorial page](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html), you may run into errors. In that case, please downgrade your Python version to 3.10 and recreate the environment.
 
 ## Citation
-If you are using YeastSAM for your research, please cite our paper:
+If you are using YeastSAM or the dataset for your research, please cite our paper:
 
 Zhao, Y., Zhu, Z., Yang, S., Li, W. YeastSAM: A Deep Learning Model for Accurate Segmentation of Budding Yeast Cells. bioRxiv 2025.09.17.676679 (2025). https://doi.org/10.1101/2025.09.17.676679
 
