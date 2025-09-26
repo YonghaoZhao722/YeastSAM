@@ -11,7 +11,7 @@ YeastSAM is a model and a framework for yeast cell analysis and mask processing.
 If you just want to run YeastSAM, you can refer to [µSAM](https://github.com/computational-cell-analytics/micro-sam) to install the framework. We provide custom weights for better yeast cell segmentation that can be downloaded from our [GitHub Releases](https://github.com/YonghaoZhao722/YeastSAM/releases). The custom weights can be used with napari, [BAND](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html#using-micro_sam-on-band), [CLI](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html#using-the-command-line-interface-cli), and [QuPath](https://github.com/ksugar/qupath-extension-sam).
 
 ## Dataset
-The dataset used for training and validation can be found at Zenodo: https://zenodo.org/records/17199688, including DIC and the masks.
+The dataset used for training and validation can be found at Zenodo: https://zenodo.org/records/17204942, including DIC and the masks.
 
 ## Installation
 
