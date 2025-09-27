@@ -1,13 +1,18 @@
 # YeastSAM
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.09.17.676679-blue)](https://www.biorxiv.org/content/10.1101/2025.09.17.676679v1)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17204942.svg)](https://doi.org/10.5281/zenodo.17204942)
-[![Documentation Status](https://readthedocs.org/projects/yeastsamdoc/badge/?version=latest)](https://yeastsamdoc.readthedocs.io/en/latest/?badge=latest)
+[![Documentation](https://readthedocs.org/projects/yeastsamdoc/badge/?version=latest)](https://yeastsamdoc.readthedocs.io/en/latest/?badge=latest)
 
 <div align="center">
   <img src="src/yeastsam.png" alt="YeastSAM Logo" width="200"/>
 </div>
 
+
 YeastSAM is a model and a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, and outline conversion. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
+
+<div align="center">
+  <img src="src/demo.gif" alt="Demo GIF" width="200"/>
+</div>
 
 ## Quick Start
 
