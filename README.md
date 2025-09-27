@@ -1,4 +1,6 @@
 # YeastSAM
+[![Documentation Status](https://readthedocs.org/projects/yeastsamdoc/badge/?version=latest)](https://yeastsamdoc.readthedocs.io/en/latest/?badge=latest)
+[![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.09.17.676679-blue)](https://www.biorxiv.org/content/10.1101/2025.09.17.676679v1)
 
 <div align="center">
   <img src="src/yeastsam.png" alt="YeastSAM Logo" width="200"/>
