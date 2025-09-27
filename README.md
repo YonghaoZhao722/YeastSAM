@@ -8,7 +8,7 @@
 </div>
 
 
-YeastSAM is a model and a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, and outline conversion. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
+YeastSAM is a model and a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, outline conversion, and mother-bud pair separation. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
 
 
 
