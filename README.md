@@ -65,8 +65,6 @@ The `tools/` directory contains the following utilities:
 - `Mask2Outline.py`: Mask to outline conversion
 - `mask_editor.py`: Advanced mask editing interface
 
-**Note**: On macOS these tools are not compatible with Python 3.13. If you follow the installation command we provide above, everything should work correctly. However, if you directly use the conda instructions from the [µSAM tutorial page](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html), you may run into errors. In that case, please downgrade your Python version to 3.10 and recreate the environment.
-
 ## Citation
 If you are using YeastSAM or the dataset for your research, please cite our paper:
 
