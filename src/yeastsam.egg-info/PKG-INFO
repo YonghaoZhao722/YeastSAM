@@ -1,3 +1,16 @@
+Metadata-Version: 2.4
+Name: yeastsam
+Version: 0.1.0
+Summary: Yeast cell analysis and mask processing tools (CLI + GUI).
+Author: Yonghao Zhao
+License: MIT
+Project-URL: Homepage, https://github.com/YonghaoZhao722/YeastSAM
+Project-URL: Documentation, https://yeastsamdoc.readthedocs.io/en/latest/
+Project-URL: Repository, https://github.com/YonghaoZhao722/YeastSAM
+Project-URL: Bug Tracker, https://github.com/YonghaoZhao722/YeastSAM/issues
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
 # YeastSAM
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.09.17.676679-blue)](https://www.biorxiv.org/content/10.1101/2025.09.17.676679v1)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17204942.svg)](https://doi.org/10.5281/zenodo.17204942)
@@ -17,24 +30,113 @@ The dataset used for training and validation can be found at Zenodo: https://zen
 
 ## Installation
 
-### With Conda
+### Quick Install (Recommended)
 
-run the following commands in your terminal:
+Run the following commands in your terminal:
 
 ```bash
 git clone https://github.com/YonghaoZhao722/YeastSAM.git
+cd YeastSAM
 conda env create -f environment.yml
 conda activate yeastsam
 ```
 
+This will:
+- Create a conda environment with Python 3.10 and micro-sam
+- Install YeastSAM in development mode
+- Set up all necessary dependencies
+
+### Alternative Installation
+
+If you prefer the manual approach:
+
+```bash
+git clone https://github.com/YonghaoZhao722/YeastSAM.git
+conda create -n yeastsam -c conda-forge -c defaults python=3.10 micro_sam
+conda activate yeastsam
+cd YeastSAM
+pip install -e .
+```
+
 ## Usage
 
-### Command Line Usage
-To start the YeastSAM tools launcher:
+### Launch the GUI
 
+After installation, you can start YeastSAM in several ways:
+
+**Option 1: Using the yeastsam command (recommended)**
 ```bash
 yeastsam
 ```
+
+**Option 2: Using Python module**
+```bash
+python -m yeastsam
+```
+
+**Option 3: Direct script execution**
+```bash
+python launch.py
+```
+
+### Command Line Options
+
+```bash
+yeastsam --help          # Show help message
+yeastsam --version       # Show version information
+yeastsam --tools         # List available tools
+```
+
+### Using as a Python Package
+
+You can also import and use YeastSAM programmatically:
+
+```python
+import yeastsam
+
+# Launch the GUI
+yeastsam.launch_gui()
+
+# Get available tools
+tools = yeastsam.get_tools()
+print(tools)
+```
+
+## Development
+
+### Quick Development Setup
+
+For developers who want to contribute or modify YeastSAM:
+
+```bash
+git clone https://github.com/YonghaoZhao722/YeastSAM.git
+cd YeastSAM
+python setup_dev.py
+conda activate yeastsam
+```
+
+### Development Commands
+
+We provide a Makefile with convenient development commands:
+
+```bash
+make help          # Show all available commands
+make setup-dev     # Set up development environment
+make test          # Run installation tests
+make clean         # Clean build artifacts
+make launch        # Launch YeastSAM GUI
+make tools         # List available tools
+```
+
+### Testing Installation
+
+After installation, you can verify everything works:
+
+```bash
+python test_installation.py
+```
+
+This will run a series of tests to ensure the package is properly installed and functional.
 
 This will open a GUI with four main sections:
 

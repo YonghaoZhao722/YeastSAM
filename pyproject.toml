@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yeastsam"
+version = "0.1.0"
+description = "Yeast cell analysis and mask processing tools (CLI + GUI)."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Yonghao Zhao" }]
+requires-python = ">=3.9"
+
+# Note: micro-sam dependency is handled by conda environment
+# Do not add it here to avoid pip/conda conflicts
+
+[project.urls]
+Homepage = "https://github.com/YonghaoZhao722/YeastSAM"
+Documentation = "https://yeastsamdoc.readthedocs.io/en/latest/"
+Repository = "https://github.com/YonghaoZhao722/YeastSAM"
+"Bug Tracker" = "https://github.com/YonghaoZhao722/YeastSAM/issues"
+
+[project.scripts]
+yeastsam = "yeastsam.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
