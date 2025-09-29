@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("YeastSAM Tools Launcher")
+        self.setWindowTitle("YeastSAM")
         grid_layout = QGridLayout()
         grid_layout.setSpacing(10)
         grid_layout.setRowStretch(0, 1)

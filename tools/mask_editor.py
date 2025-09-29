@@ -2519,7 +2519,7 @@ class MaskEditor(QMainWindow):
             return
         
         # Default path if exists, otherwise show file dialog
-        default_path = "/Volumes/ExFAT/cell_div_train/dividing_line_models/best_model.pth"
+        default_path = ""
         
         if os.path.exists(default_path):
             file_path = default_path
