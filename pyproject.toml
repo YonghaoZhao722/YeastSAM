@@ -7,7 +7,7 @@ name = "yeastsam"
 version = "0.1.0"
 description = "Yeast cell analysis and mask processing tools (CLI + GUI)."
 readme = "README.md"
-license = { text = "MIT" }
+license = {text = "MIT"}
 authors = [{ name = "Yonghao Zhao" }]
 requires-python = ">=3.9"
 
@@ -28,3 +28,6 @@ where = ["src"]
 
 [tool.setuptools.package-dir]
 "" = "src"
+
+[tool.setuptools]
+include-package-data = true

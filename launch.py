@@ -1,6 +1,7 @@
 import sys
 import subprocess
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QFrame, QGridLayout
+import os
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QFrame, QGridLayout, QMessageBox
 from PyQt5.QtCore import Qt
 
 class MainWindow(QMainWindow):
@@ -14,6 +15,9 @@ class MainWindow(QMainWindow):
         grid_layout.setColumnStretch(0, 1)
         grid_layout.setColumnStretch(1, 1)
         self.resize(250, 250)
+        
+        # Get the absolute path to the tools directory
+        self.tools_dir = self._get_tools_directory()
 
         def create_section(title, buttons):
             frame = QFrame()
@@ -75,22 +79,50 @@ class MainWindow(QMainWindow):
         container.setLayout(grid_layout)
         self.setCentralWidget(container)
 
+    def _get_tools_directory(self):
+        """Get the absolute path to the tools directory."""
+        # Get the directory where launch.py is located
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # The tools directory should be in the same directory as launch.py
+        tools_dir = os.path.join(current_dir, "tools")
+        return tools_dir
+    
+    def _launch_tool(self, script_name):
+        """Launch a tool script with error handling."""
+        script_path = os.path.join(self.tools_dir, script_name)
+        if not os.path.exists(script_path):
+            QMessageBox.critical(
+                self,
+                "File Not Found",
+                f"Could not find the script: {script_path}\n\n"
+                f"Please make sure the tools directory is properly installed."
+            )
+            return
+        
+        try:
+            subprocess.Popen([sys.executable, script_path])
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "Launch Error", 
+                f"Failed to launch {script_name}:\n{str(e)}"
+            )
+
     def launch_napari(self):
         import napari
         viewer = napari.Viewer() 
 
-
     def launch_shift_analyzer(self):
-        subprocess.Popen([sys.executable, "tools/shift.py"])
+        self._launch_tool("shift.py")
 
     def launch_apply_registration(self):
-        subprocess.Popen([sys.executable, "tools/registration.py"])
+        self._launch_tool("registration.py")
 
     def launch_mask2outline(self):
-        subprocess.Popen([sys.executable, "tools/Mask2Outline.py"])
+        self._launch_tool("Mask2Outline.py")
 
     def launch_mask_editor(self):
-        subprocess.Popen([sys.executable, "tools/mask_editor.py"])
+        self._launch_tool("mask_editor.py")
 
 def main():
     app = QApplication(sys.argv)

@@ -11,3 +11,5 @@
 
 ._*
 __pycache__/
+installer/
+build/

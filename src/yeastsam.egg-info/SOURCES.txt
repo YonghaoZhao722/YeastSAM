@@ -1,4 +1,6 @@
+MANIFEST.in
 README.md
+launch.py
 pyproject.toml
 src/yeastsam/__init__.py
 src/yeastsam/__main__.py
@@ -12,3 +14,7 @@ src/yeastsam.egg-info/SOURCES.txt
 src/yeastsam.egg-info/dependency_links.txt
 src/yeastsam.egg-info/entry_points.txt
 src/yeastsam.egg-info/top_level.txt
+tools/Mask2Outline.py
+tools/mask_editor.py
+tools/registration.py
+tools/shift.py

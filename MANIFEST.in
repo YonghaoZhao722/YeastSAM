@@ -1,0 +1,3 @@
+include launch.py
+recursive-include tools *.py
+include tools/*

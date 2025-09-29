@@ -15,11 +15,15 @@ Description-Content-Type: text/markdown
 [![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.09.17.676679-blue)](https://www.biorxiv.org/content/10.1101/2025.09.17.676679v1)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17204942.svg)](https://doi.org/10.5281/zenodo.17204942)
 
+
 <div align="center">
   <img src="src/yeastsam.png" alt="YeastSAM Logo" width="200"/>
 </div>
 
-YeastSAM is a model and a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, and outline conversion. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
+
+YeastSAM is a model and a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, outline conversion, and mother-bud pair separation. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
+
+
 
 ## Quick Start
 
@@ -30,113 +34,24 @@ The dataset used for training and validation can be found at Zenodo: https://zen
 
 ## Installation
 
-### Quick Install (Recommended)
+### With Conda
 
-Run the following commands in your terminal:
+run the following commands in your terminal:
 
 ```bash
 git clone https://github.com/YonghaoZhao722/YeastSAM.git
-cd YeastSAM
 conda env create -f environment.yml
 conda activate yeastsam
 ```
 
-This will:
-- Create a conda environment with Python 3.10 and micro-sam
-- Install YeastSAM in development mode
-- Set up all necessary dependencies
-
-### Alternative Installation
-
-If you prefer the manual approach:
-
-```bash
-git clone https://github.com/YonghaoZhao722/YeastSAM.git
-conda create -n yeastsam -c conda-forge -c defaults python=3.10 micro_sam
-conda activate yeastsam
-cd YeastSAM
-pip install -e .
-```
-
 ## Usage
 
-### Launch the GUI
+### Command Line Usage
+To start the YeastSAM tools launcher:
 
-After installation, you can start YeastSAM in several ways:
-
-**Option 1: Using the yeastsam command (recommended)**
 ```bash
 yeastsam
 ```
-
-**Option 2: Using Python module**
-```bash
-python -m yeastsam
-```
-
-**Option 3: Direct script execution**
-```bash
-python launch.py
-```
-
-### Command Line Options
-
-```bash
-yeastsam --help          # Show help message
-yeastsam --version       # Show version information
-yeastsam --tools         # List available tools
-```
-
-### Using as a Python Package
-
-You can also import and use YeastSAM programmatically:
-
-```python
-import yeastsam
-
-# Launch the GUI
-yeastsam.launch_gui()
-
-# Get available tools
-tools = yeastsam.get_tools()
-print(tools)
-```
-
-## Development
-
-### Quick Development Setup
-
-For developers who want to contribute or modify YeastSAM:
-
-```bash
-git clone https://github.com/YonghaoZhao722/YeastSAM.git
-cd YeastSAM
-python setup_dev.py
-conda activate yeastsam
-```
-
-### Development Commands
-
-We provide a Makefile with convenient development commands:
-
-```bash
-make help          # Show all available commands
-make setup-dev     # Set up development environment
-make test          # Run installation tests
-make clean         # Clean build artifacts
-make launch        # Launch YeastSAM GUI
-make tools         # List available tools
-```
-
-### Testing Installation
-
-After installation, you can verify everything works:
-
-```bash
-python test_installation.py
-```
-
-This will run a series of tests to ensure the package is properly installed and functional.
 
 This will open a GUI with four main sections:
 
@@ -162,8 +77,6 @@ The `tools/` directory contains the following utilities:
 - `registration.py`: Image registration functionality
 - `Mask2Outline.py`: Mask to outline conversion
 - `mask_editor.py`: Advanced mask editing interface
-
-**Note**: On macOS these tools are not compatible with Python 3.13. If you follow the installation command we provide above, everything should work correctly. However, if you directly use the conda instructions from the [µSAM tutorial page](https://computational-cell-analytics.github.io/micro-sam/micro_sam.html), you may run into errors. In that case, please downgrade your Python version to 3.10 and recreate the environment.
 
 ## Citation
 If you are using YeastSAM or the dataset for your research, please cite our paper:
