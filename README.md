@@ -7,9 +7,7 @@
   <img src="src/yeastsam.png" alt="YeastSAM Logo" width="200"/>
 </div>
 
-
 YeastSAM is a model and a framework for yeast cell analysis and mask processing. It provides an intuitive GUI launcher and various tools for generating masks, image registration, outline conversion, and mother-bud pair separation. For detailed documentation, visit [YeastSAM](https://yeastsamdoc.readthedocs.io/en/latest/).
-
 
 
 ## Quick Start
@@ -21,7 +19,14 @@ The dataset used for training and validation can be found at Zenodo: https://zen
 
 ## Installation
 
-### With Conda
+### **Prerequisite: Conda**
+
+YeastSAM requires a [Conda](https://docs.conda.io/en/latest/) environment. If you do not already have Conda or Miniconda installed, please install one of them first:
+
+- [Conda](https://docs.conda.io/projects/conda/en/stable/user-guide/install/index.html#regular-installation) or [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install)
+
+
+### With Terminal
 
 run the following commands in your terminal:
 
@@ -29,7 +34,12 @@ run the following commands in your terminal:
 git clone https://github.com/YonghaoZhao722/YeastSAM.git
 cd YeastSAM
 conda env create -f environment.yml
+pip install .
 ```
+
+### With Installer
+YeastSAM can also be installed using the installer.
+- MacOS: [YeastSAM.pkg](https://github.com/YonghaoZhao722/YeastSAM/releases/download/1.0.1/YeastSAM.pkg)
 
 ## Usage
 
