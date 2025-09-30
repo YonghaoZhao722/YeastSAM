@@ -5,6 +5,5 @@ channels:
 dependencies:
   - python=3.10
   - micro_sam
+  - opencv
   - pip
-  - pip:
-      - -e .

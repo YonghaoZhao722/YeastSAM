@@ -32,6 +32,7 @@ try:
     TORCH_AVAILABLE = True
     print("PyTorch available - Classification features enabled")
 except ImportError:
+    print(f"PyTorch import failed: {sys.exc_info()[1]}")
     TORCH_AVAILABLE = False
     print("Warning: PyTorch not available - Classification features disabled")
 
