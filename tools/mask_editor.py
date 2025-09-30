@@ -29,7 +29,6 @@ try:
     import torch
     import torch.nn as nn
     import torch.nn.functional as F
-    from torchvision import transforms
     TORCH_AVAILABLE = True
     print("PyTorch available - Classification features enabled")
 except ImportError:
