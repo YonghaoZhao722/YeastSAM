@@ -1,2 +1,1 @@
-recursive-include tools *.py
-include tools/*
+# Tools are now included in the package directory

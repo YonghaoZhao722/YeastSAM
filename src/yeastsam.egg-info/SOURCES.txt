@@ -15,6 +15,10 @@ src/yeastsam.egg-info/SOURCES.txt
 src/yeastsam.egg-info/dependency_links.txt
 src/yeastsam.egg-info/entry_points.txt
 src/yeastsam.egg-info/top_level.txt
+src/yeastsam/tools/Mask2Outline.py
+src/yeastsam/tools/mask_editor.py
+src/yeastsam/tools/registration.py
+src/yeastsam/tools/shift.py
 tools/.___pycache__
 tools/._mask_editor.py
 tools/Mask2Outline.py

@@ -83,9 +83,8 @@ class MainWindow(QMainWindow):
         """Get the absolute path to the tools directory."""
         # Get the directory where this file is located (yeastsam package)
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        # Go up to the project root and then to tools directory
-        project_root = os.path.dirname(os.path.dirname(current_dir))
-        tools_dir = os.path.join(project_root, "tools")
+        # The tools directory is now within the package directory
+        tools_dir = os.path.join(current_dir, "tools")
         return tools_dir
     
     def _launch_tool(self, script_name):
