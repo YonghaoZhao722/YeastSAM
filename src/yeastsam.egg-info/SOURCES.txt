@@ -4,6 +4,7 @@ launch.py
 pyproject.toml
 src/yeastsam/__init__.py
 src/yeastsam/__main__.py
+src/yeastsam/launch.py
 src/yeastsam.egg-info/._PKG-INFO
 src/yeastsam.egg-info/._SOURCES.txt
 src/yeastsam.egg-info/._dependency_links.txt
@@ -14,6 +15,8 @@ src/yeastsam.egg-info/SOURCES.txt
 src/yeastsam.egg-info/dependency_links.txt
 src/yeastsam.egg-info/entry_points.txt
 src/yeastsam.egg-info/top_level.txt
+tools/.___pycache__
+tools/._mask_editor.py
 tools/Mask2Outline.py
 tools/mask_editor.py
 tools/registration.py

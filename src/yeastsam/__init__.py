@@ -24,16 +24,8 @@ def launch_gui():
     """Launch the YeastSAM GUI launcher."""
     ensure_microsam()
     
-    # Import and run the main GUI
-    import sys
-    import os
-    
-    # Add the project root to Python path to find launch.py
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    if project_root not in sys.path:
-        sys.path.insert(0, project_root)
-    
-    from launch import main
+    # Import and run the main GUI from the local launch module
+    from .launch import main
     main()
 
 def get_tools():
