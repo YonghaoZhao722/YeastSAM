@@ -34,6 +34,7 @@ run the following commands in your terminal:
 git clone https://github.com/YonghaoZhao722/YeastSAM.git
 cd YeastSAM
 conda env create -f environment.yml
+conda activate yeastsam
 pip install .
 ```
 
