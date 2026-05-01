@@ -1,5 +1,5 @@
 # YeastSAM
-[![bioRxiv](https://img.shields.io/badge/bioRxiv-10.1101%2F2025.09.17.676679-blue)](https://www.biorxiv.org/content/10.1101/2025.09.17.676679v1)
+[![MBoC](https://img.shields.io/badge/MBoC-10.1091%2Fmbc.E25--09--0454-blue)](https://doi.org/10.1091/mbc.E25-09-0454)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17204942.svg)](https://doi.org/10.5281/zenodo.17204942)
 
 
