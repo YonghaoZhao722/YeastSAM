@@ -80,7 +80,7 @@ The `tools/` directory contains the following utilities:
 ## Citation
 If you are using YeastSAM or the dataset for your research, please cite our paper:
 
-Zhao, Y., Zhu, Z., Yang, S., Li, W. YeastSAM: A Deep Learning Model for Accurate Segmentation of Budding Yeast Cells. bioRxiv 2025.09.17.676679 (2025). https://doi.org/10.1101/2025.09.17.676679
+Zhao, Y., Zhu, Z., Yang, S., & Li, W. (2026). YeastSAM: A Deep Learning Model for Accurate Segmentation of Yeast Cells. Molecular Biology of the Cell. Advance online publication. https://doi.org/10.1091/mbc.E25-09-0454
 
 ## Acknowledgement
 
