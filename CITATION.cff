@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "YeastSAM"
+authors:
+  - family-names: "Zhao"
+    given-names: "Yonghao"
+    orcid: "https://orcid.org/0009-0007-3180-596X"
+    website: "https://yonghaoz.com"
+  - family-names: "Zhu"
+    given-names: "Zhouyuan"
+  - family-names: "Yang"
+    given-names: "Sen"
+  - family-names: "Li"
+    given-names: "Weihan"
+repository-code: "https://github.com/YonghaoZhao722/YeastSAM"
+url: "https://yonghaoz.com/papers/yeastsam/"
+preferred-citation:
+  type: article
+  title: "YeastSAM: A deep learning model for accurate segmentation of yeast cells"
+  authors:
+    - family-names: "Zhao"
+      given-names: "Yonghao"
+      orcid: "https://orcid.org/0009-0007-3180-596X"
+      website: "https://yonghaoz.com"
+    - family-names: "Zhu"
+      given-names: "Zhouyuan"
+    - family-names: "Yang"
+      given-names: "Sen"
+    - family-names: "Li"
+      given-names: "Weihan"
+  journal: "Molecular Biology of the Cell"
+  year: 2026
+  doi: "10.1091/mbc.E25-09-0454"
+  volume: 37
+  issue: 6
